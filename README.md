@@ -9,14 +9,18 @@ You need Java 8 installed.
 /dogs/list/ - lists all the available dogs grouped by breed
 /dogs/list/{breed} - list all dogs by breed
 /dogs/{id} - details of a particular dog picture
-/dogs/vote/up/{id} - votes up a picture
-/dogs/vote/down/{id} - votes down a picture
+/dogs/vote/up/{id}/{client} - votes up a picture
+/dogs/vote/down/{id}/{client} - votes down a picture
 
 ## JSON Responses
 This is the example structure of the JSON Response for all but the voting structure.
 
 ```
 { id: '123456', pictureUrl: 'http://dogpic.com/123.jpg', timesFavourited: 10, details : 'Free Form test of the details of the dog breed'}
+
+## Testing
+Integration tests are ran : `./gradlew integrationTest`
+Unit tests are ran : `./gradlew test`
 
 ## Building
 

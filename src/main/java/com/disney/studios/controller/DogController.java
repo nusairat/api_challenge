@@ -42,6 +42,14 @@ public class DogController implements Logger {
         return breeds;
     }
 
+    @RequestMapping("/dogs/list/{breed}")
+    public List<Dog> listOfDogsByBreed(@PathVariable("breed") String breed) {
+        info("Retrieve list of dogs by breed " + breed);
+        List<Dog> dogs = (List<Dog>) dogRepository.findAllByBreed(breed);
+
+        return dogs;
+    }
+
     @RequestMapping("/dogs/{id}")
     @ResponseBody
     public Dog dogInformation(@PathVariable("id") Long id) {
@@ -70,18 +78,10 @@ public class DogController implements Logger {
     }
 
     private ResponseEntity voteSuccess() {
-        return new ResponseEntity<>(new JSONMessageObject("incremented successfully", true), HttpStatus.OK);
+        return new ResponseEntity<>(new JSONMessageObject("vote successfull", true), HttpStatus.OK);
     }
 
     private ResponseEntity voteFailure() {
         return new ResponseEntity<>(new JSONMessageObject("client has already tried", false), HttpStatus.NOT_ACCEPTABLE);
-    }
-
-    @RequestMapping("/dogs/list/{breed}")
-    public List<Dog> listOfDogsByBreed(@PathVariable("breed") String breed) {
-        info("Retrieve list of dogs by breed " + breed);
-        List<Dog> dogs = (List<Dog>) dogRepository.findAllByBreed(breed);
-
-        return dogs;
     }
 }
