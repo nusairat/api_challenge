@@ -51,18 +51,30 @@ public class DogController implements Logger {
         return dog;
     }
 
-    @RequestMapping("/dogs/vote/up/{id}")
-    public ResponseEntity voteUp(@PathVariable("id") Long id) {
+    @RequestMapping("/dogs/vote/up/{id}/{client}")
+    public ResponseEntity voteUp(@PathVariable("id") Long id, @PathVariable("client") String client) {
         info("Vote up a dog : " + id);
-        votingService.vote(id, true, "joseph");
-        return new ResponseEntity<>(new JSONMessageObject("incremented successfully"), HttpStatus.OK);
+        boolean success = votingService.vote(id, true, client);
+
+        if (success) return voteSuccess();
+        else return voteFailure();
     }
 
-    @RequestMapping("/dogs/vote/down/{id}")
-    public String voteDown(@PathVariable("id") Long id) {
+    @RequestMapping("/dogs/vote/down/{id}/{client}")
+    public ResponseEntity voteDown(@PathVariable("id") Long id, @PathVariable("client") String client) {
         info("Vote down a dog : " + id);
-        votingService.vote(id, false, "joseph");
-        return "sucess";
+        boolean success = votingService.vote(id, false, client);
+
+        if (success) return voteSuccess();
+        else return voteFailure();
+    }
+
+    private ResponseEntity voteSuccess() {
+        return new ResponseEntity<>(new JSONMessageObject("incremented successfully", true), HttpStatus.OK);
+    }
+
+    private ResponseEntity voteFailure() {
+        return new ResponseEntity<>(new JSONMessageObject("client has already tried", false), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @RequestMapping("/dogs/list/{breed}")
