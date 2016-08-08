@@ -11,6 +11,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.disney.studios.dao.BreedRepository;
+import com.disney.studios.dao.DogRepository;
+import com.disney.studios.domain.Dog;
+import com.disney.studios.domain.Breed;
+
 /**
  * Loads stored objects from the file system and builds up
  * the appropriate objects to add to the data source.
@@ -35,6 +40,12 @@ public class PetLoader implements InitializingBean {
     @Autowired
     DataSource dataSource;
 
+    @Autowired
+    BreedRepository breedRepository;
+
+    @Autowired
+    DogRepository dogRepository;
+
     /**
      * Load the different breeds into the data source after
      * the application is ready.
@@ -56,14 +67,19 @@ public class PetLoader implements InitializingBean {
      * @param source The file holding the breeds.
      * @throws IOException In case things go horribly, horribly wrong.
      */
-    private void loadBreed(String breed, Resource source) throws IOException {
+    private void loadBreed(String breedName, Resource source) throws IOException {
         try ( BufferedReader br = new BufferedReader(new InputStreamReader(source.getInputStream()))) {
+            // Save the breed first
+            Breed breed = breedRepository.save(new Breed(breedName));
+System.out.println("BREED :: " + breed);
             String line;
             while ((line = br.readLine()) != null) {
                 System.out.println(line);
                 /* TODO: Create appropriate objects and save them to
                  *       the datasource.
                  */
+                Dog dog = dogRepository.save(new Dog(line, breed, 0));
+System.out.println("DOG :: " + dog);
             }
         }
     }
