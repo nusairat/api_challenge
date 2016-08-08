@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-This project uses Maven for builds.
+This project uses Gradle for builds.
 You need Java 8 installed.
 
 ## Endpoints
@@ -21,6 +21,12 @@ This is the example structure of the JSON Response for all but the voting struct
 ## Testing
 Integration tests are ran : `./gradlew integrationTest`
 Unit tests are ran : `./gradlew test`
+
+## Running to Test
+If you want to run it so that it auto starts you will need to open two windows and run each command in each window.
+`./gradlew -t build` - this will automatically build repeatedly with tests.
+`./gradlew -t classes` - this will automatically build repeatedly without tests.
+`./gradlew bootRun` - runs the
 
 ## Building
 
